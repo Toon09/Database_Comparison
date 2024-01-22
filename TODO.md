@@ -1,0 +1,6 @@
+- test db creation
+- test db deletion
+- test data insertion
+- test data reading
+- test indexing?
+- test getting size
