@@ -6,9 +6,6 @@ from datetime import datetime
 
 
 
-# when inserting it needs to open js and run the translator
-# to only open it once you need to run the startSubprocess and  endSubprocess functions
-# make sure to not do it every insert, but end after all inserts are done since it can be slow
 class insertData():
     def __init__(self, db, shoreline):
         self.db = db
