@@ -10,6 +10,15 @@ class Arango():
 
         self.dataGetter = insertData(db=self.db, shoreline=self.shoreline) # all methods for inserting data are managed here
 
+
+    def deleteDatabase(self):
+        self.client.delete_database('HBI_datalake')
+
+    def createDatabase(self):
+        self.db = self.client.create_database('HBI_datalake')
+        self.shoreline = self.db.create_collection('shoreline')
+
+
     def printAllIndexes(self):
         for index in self.shoreline.indexes():
             print(index)
@@ -19,6 +28,6 @@ class Arango():
 
     def insertData(self, directory):
         start_time = time.time()
-        out = self.dataGetter.storeDirectory(directory)
+        self.dataGetter.storeDirectory(directory)
 
         return (time.time() - start_time)

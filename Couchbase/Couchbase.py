@@ -13,6 +13,16 @@ class Couchbase():
 
         self.dataGetter = insertData(db=self.db, shoreline=self.shoreline) # all methods for inserting data are managed here
 
+
+    def deleteDatabase(self):
+        self.cluster.buckets().drop_bucket('HBI_datalake')
+
+    def createDatabase(self):
+        self.cluster.buckets().create_bucket('HBI_datalake')
+        self.db = self.cluster.bucket('HBI_datalake')
+        self.shoreline = self.db.default_collection()
+        
+
     def printAllIndexes(self):
         for index in self.db.query_indexes().get_all_indexes():
             print(index)
@@ -22,6 +32,7 @@ class Couchbase():
 
     def insertData(self, directory):
         start_time = time.time()
-        out = self.dataGetter.storeDirectory(directory)
+        self.dataGetter.storeDirectory(directory)
 
         return (time.time() - start_time)
+    
