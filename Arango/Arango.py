@@ -1,5 +1,5 @@
 from arango import ArangoClient
-from Arango import insertData
+from Arango.insertData import insertData
 import time
 
 class Arango():
@@ -17,6 +17,8 @@ class Arango():
     def createDatabase(self):
         self.db = self.client.create_database('HBI_datalake')
         self.shoreline = self.db.create_collection('shoreline')
+
+        self.addIndexes()
 
 
     def printAllIndexes(self):

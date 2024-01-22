@@ -18,6 +18,8 @@ class Mongo():
         self.db = self.client["HBI_datalake"]
         self.shoreline = self.db["shoreline"]
 
+        self.addIndexes()
+
 
     def printAllIndeces(self):
         for index in self.shoreline.list_indexes():

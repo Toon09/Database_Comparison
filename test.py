@@ -1,6 +1,19 @@
-from Mongo import Mongo
+from Mongo.Mongo import Mongo
+from Arango.Arango import Arango
+
+test_directory = "C:/Users/raul/OneDrive - HBI Bisscheroux/Documents/data"
+
 
 mong = Mongo()
-mong.addIndexes()
+mong.createDatabase()
 
-test_direct = "C:/Users/raul/OneDrive - HBI Bisscheroux/Documents/data"
+arang = Arango()
+mong.createDatabase()
+
+
+
+
+#arang.deleteDatabase()
+#mong.deleteDatabase()
+
+

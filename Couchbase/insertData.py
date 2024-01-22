@@ -5,7 +5,7 @@ import os
 from decimal import Decimal
 from datetime import datetime
 
-class insertDataCouchbase():
+class insertData():
     def __init__(self, db, shoreline):
         self.db = db
         self.shoreline = shoreline

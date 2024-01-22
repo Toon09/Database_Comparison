@@ -21,6 +21,8 @@ class Couchbase():
         self.cluster.buckets().create_bucket('HBI_datalake')
         self.db = self.cluster.bucket('HBI_datalake')
         self.shoreline = self.db.default_collection()
+
+        self.addIndexes()
         
 
     def printAllIndexes(self):
