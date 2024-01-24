@@ -21,7 +21,7 @@ class Mongo():
         self.addIndexes()
 
 
-    def printAllIndeces(self):
+    def printAllIndexes(self):
         for index in self.shoreline.list_indexes():
             print(index)
 

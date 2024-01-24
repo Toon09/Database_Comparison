@@ -57,24 +57,18 @@ class insertData():
 
     # changes the time from a string to a datetime type which is better used for ranges, etc
     def changeTimeFormat(self, doc):
-        if "metadata" in doc: #
+        if "metadata" in doc:
             if not isinstance(doc["metadata"]["time"], datetime):
                 time = doc["metadata"]["time"][:-1] # adds the 0's missing
                 if len(time) < 27-1:
                     time = time + "0"*(27-len(doc["metadata"]["time"])) 
-                    # add as many zeros as the difference between the length it's supposed to be
-                    # and the length it actually is now
                 elif len(time) > 27-1:
-                    time = time[:27-len(doc["metadata"]["time"])] # cut off the extra 0's so its length is 26 + 'Z' again
+                    time = time[:27-len(doc["metadata"]["time"])] 
 
-                    # changing the format and adding the Z for it to be used
-                newTime = datetime.strptime(time + "Z", "%Y-%m-%dT%H:%M:%S.%fZ") # error caused by  0's on the right missing
-                doc["metadata"]["time"] = newTime
-                #self.shoreline.update_one({'_id':doc['_id']}, {'$set':{"metadata.time":newTime}})
-                        
+                newTime = datetime.strptime(time + "Z", "%Y-%m-%dT%H:%M:%S.%fZ")
+                doc["metadata"]["time"] = newTime.isoformat() # Convert datetime to string
 
-        else: # event types action and command do not have metadata, they use "created_at" which has a different format :/
+        else: 
             newTime = datetime.strptime(doc["created_at"][:-6], "%Y-%m-%dT%H:%M:%S.%f")
-            # datetime is by default UTC which is Z so there's no need to add it here
-            doc["created_at"] = newTime
-            #self.shoreline.update_one({'_id':doc['_id']}, {'$set':{"metadata.time":newTime}}) # code used to be ran after all insertions not during
+            doc["created_at"] = newTime.isoformat() # Convert datetime to string
+

@@ -11,11 +11,21 @@ mong.createDatabase()
 arang = Arango()
 arang.createDatabase()
 
-couch = Couchbase()
-couch.createDatabase()
+#couch = Couchbase()
+#couch.createDatabase()
 
 
-arang.deleteDatabase()
-mong.deleteDatabase()
+#print(f"mong: {mong.insertData(test_directory)}")
+#print(f"arang: {arang.insertData(test_directory)}")
+
+print()
+
+mong.printAllIndexes()
+print()
+arang.printAllIndexes()
+
+
+#arang.deleteDatabase()
+#mong.deleteDatabase()
 
 
