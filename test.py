@@ -2,6 +2,8 @@ from Mongo.Mongo import Mongo
 from Arango.Arango import Arango
 from Couchbase.Couchbase import Couchbase
 
+import time
+
 test_directory = "C:/Users/raul/OneDrive - HBI Bisscheroux/Documents/data"
 
 
@@ -9,7 +11,7 @@ mong = Mongo()
 mong.createDatabase()
 
 arang = Arango()
-arang.createDatabase()
+#arang.createDatabase()
 
 #couch = Couchbase()
 #couch.createDatabase()
@@ -20,9 +22,25 @@ arang.createDatabase()
 
 print()
 
-mong.printAllIndexes()
+
+s = time.time()
+cur = arang.findUniqueAppIds()
+print(f"exec: {time.time()-s}\n")
+
+for x in cur:
+    print(x)
+
 print()
-arang.printAllIndexes()
+
+s = time.time()
+cur = arang.findUniqueOrganisationIds()
+print(f"exec: {time.time()-s}\n")
+
+for x in cur:
+    print(x)
+
+
+
 
 
 #arang.deleteDatabase()

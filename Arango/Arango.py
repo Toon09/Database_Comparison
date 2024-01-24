@@ -39,3 +39,46 @@ class Arango():
         self.dataGetter.storeDirectory(directory)
 
         return (time.time() - start_time)
+
+    ######### QUERIES
+
+
+
+    def queryPayloadFields(self, organisation_id, start_date, end_date):
+        # Convert datetime objects to ISO format strings
+        start_date = start_date.isoformat()
+        end_date = end_date.isoformat()
+
+        cursor = self.db.aql.execute(
+            'FOR doc IN shoreline '
+            'FILTER doc.attributes.organisation == @organisation_id '
+            '&& doc.metadata.time >= @start_date '
+            '&& doc.metadata.time <= @end_date '
+            'RETURN doc.payload_fields',
+            bind_vars={'organisation_id': organisation_id, 'start_date': start_date, 'end_date': end_date}
+        )
+
+        return cursor
+    
+
+    def findUniqueAppIds(self):
+        cursor = self.db.aql.execute(
+            'FOR doc IN shoreline '
+            'COLLECT app_id = doc.app_id WITH COUNT INTO count '
+            'RETURN app_id'
+        )
+
+        return cursor
+    
+
+    def findUniqueOrganisationIds(self):
+        cursor = self.db.aql.execute(
+            'FOR doc IN shoreline '
+            'COLLECT organisation_id = doc.attributes.organisation WITH COUNT INTO count '
+            'RETURN organisation_id'
+        )
+
+        return cursor
+
+
+
