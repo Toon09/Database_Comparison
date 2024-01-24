@@ -1,5 +1,4 @@
 from couchbase.cluster import Cluster, ClusterOptions
-from couchbase_core.n1ql import N1QLQuery
 import ijson
 import os
 from decimal import Decimal
