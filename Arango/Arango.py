@@ -81,4 +81,13 @@ class Arango():
         return cursor
 
 
+    def queryByDeviceId(self, device_id):
+        cursor = self.db.aql.execute(
+            'FOR doc IN shoreline '
+            'FILTER doc.device_id == @device_id '
+            'RETURN doc.payload_fields',
+            bind_vars={'device_id': device_id}
+        )
+
+        return cursor
 
