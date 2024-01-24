@@ -70,6 +70,15 @@ class Arango():
 
         return cursor
     
+    def findUniqueDeviceIds(self):
+        cursor = self.db.aql.execute(
+            'FOR doc IN shoreline '
+            'COLLECT device_id = doc.device_id WITH COUNT INTO count '
+            'RETURN device_id'
+        )
+
+        return cursor
+    
 
     def findUniqueOrganisationIds(self):
         cursor = self.db.aql.execute(

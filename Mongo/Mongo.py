@@ -40,29 +40,29 @@ class Mongo():
         start_date = start_date.isoformat()
         end_date = end_date.isoformat()
 
-        # Execute a MongoDB query
         cursor = self.shoreline.find(
             {"attributes.organisation": organisation_id, "metadata.time": {"$gte": start_date, "$lte": end_date}},
             {"payload_fields": 1}
         )
 
-        # Return the result cursor
         return cursor
+
 
     def findUniqueModelIds(self):
-        # Execute a MongoDB query
         cursor = self.shoreline.distinct("model_id")
-
-        # Return the result cursor
-        return cursor
-
-    def findUniqueOrganisationIds(self):
-        # Execute a MongoDB query
-        cursor = self.shoreline.distinct("attributes.organisation")
-
-        # Return the result cursor
         return cursor
     
+
+    def findUniqueDeviceIds(self):
+        cursor = self.shoreline.distinct("device_id")
+        return cursor
+
+
+    def findUniqueOrganisationIds(self):
+        cursor = self.shoreline.distinct("attributes.organisation")
+        return cursor
+    
+
     def queryByDeviceId(self, device_id):
         cursor = self.shoreline.find(
             {"device_id": device_id},

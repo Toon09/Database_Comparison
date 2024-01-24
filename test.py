@@ -39,8 +39,18 @@ print(f"exec: {time.time()-s}\n")
 for x in cur:
     print(x)
 
+print()
+
+s = time.time()
+cur = arang.findUniqueDeviceIds()
+print(f"exec: {time.time()-s}\n")
 
 
+print()
+
+s = time.time()
+cur = arang.queryByDeviceId("fe8940ab-9ffe-4c16-ba59-b3235e2ae776#1eda41b6-78af-4eff-aaa4-88f928a33537#6c170ee5-5481-42ff-bf0d-26a36743b043#70b3d543800026d4")
+print(f"exec: {time.time()-s}\n")
 
 
 #arang.deleteDatabase()
