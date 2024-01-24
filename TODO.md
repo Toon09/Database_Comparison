@@ -7,3 +7,6 @@
 
 - put code in separate repository and deliver from that repository and not this one
 - comment all code and so
+
+
+- read has different types of queries, name a different file for each type of query

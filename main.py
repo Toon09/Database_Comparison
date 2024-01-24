@@ -30,12 +30,12 @@ from Mongo.Mongo import Mongo
 from Arango.Arango import Arango
 from Couchbase.Couchbase import Couchbase
 
+
 import os
 import random
 import json
 import ijson
 from decimal import Decimal
-
 
 class DecimalEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -74,7 +74,33 @@ def select_json_files(directory, M):
 
     return selected_files
 
-# Usage
+
+
+
 data_directory = "C:/Users/raul/OneDrive - HBI Bisscheroux/Documents/werk/report_phase1/data_report/"
-M = 12_000_000  # replace with your size limit in bytes
-print(f"Selected files: {select_json_files(data_directory, M)}")
+
+N = 1_000 # number of data samples to get
+min_size = 12_000_000 # min size (in bytes) of how much data is to be saved for each data sample of the exp
+
+
+for i in range(N):
+    mong = Mongo()
+    arang = Arango()
+
+    # databases are created with indexes
+    mong.createDatabase()
+    arang.createDatabase()
+
+
+    # generating the data
+    select_json_files(data_directory, min_size)
+
+    # write code to append data in the corresponding datafolder
+
+
+    # delete to empty and be able to get next data sample without any relations
+    mong.deleteDatabase()
+    arang.deleteDatabase()
+
+    del mong
+    del arang
