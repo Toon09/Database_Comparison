@@ -20,11 +20,6 @@ arang = Arango()
 #print(f"mong: {mong.insertData(test_directory)}")
 #print(f"arang: {arang.insertData(test_directory)}")
 
-print()
-
-a = [1, 2, 3]
-
-print( sum(a)/len(a) )
 
 s = time.time()
 cur = arang.findUniqueModelIds()

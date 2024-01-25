@@ -169,11 +169,6 @@ for i in range(N):
     cur = mong.findUniqueDeviceIds()
     writeCSV( [time.time()-s], "Mongo/data/readDeviceID.csv" )
 
-    s = time.time()
-    cur = arang.findUniqueDeviceIds()
-    writeCSV( [time.time()-s], "Arango/data/readDeviceID.csv" )
-
-
     temp = []
     for x in cur:
         if x == None:
@@ -185,6 +180,10 @@ for i in range(N):
     writeCSV( temp, "Mongo/data/readDevicesFields.csv" )
     writeCSV( [sum(temp)/len(temp)], "Mongo/data/readDevicesFieldsAVG.csv" )
 
+
+    s = time.time()
+    cur = arang.findUniqueDeviceIds()
+    writeCSV( [time.time()-s], "Arango/data/readDeviceID.csv" )
 
     temp = []
     for x in cur:
