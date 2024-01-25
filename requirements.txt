@@ -2,3 +2,6 @@ python-arango
 couchbase
 pymongo
 zstandard
+matplotlib
+csv
+ijson
