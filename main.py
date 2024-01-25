@@ -82,7 +82,7 @@ def select_json_files(directory, M):
 def writeCSV(array, file_path):
     with open(file_path, 'a', newline='') as f:
         writer = csv.writer(f)
-        #writer.writerow(array)
+        writer.writerow(array)
 
 
 def size_dir(path): # ="C:/ProgramData/ArangoDB/engine-rocksdb/journals/"
@@ -109,7 +109,7 @@ def rowAVG(file_path, row=-1):
 data_directory = "C:/Users/raul/OneDrive - HBI Bisscheroux/Documents/werk/report_phase1/data_report/"
 
 N = 1_000 # number of data samples to get
-min_size = 30_000_000 # min size (in bytes) of how much data is to be saved for each data sample of the exp, 42 is 30% of data RIGHT NOWWWWWWWWWWWWWWWWWWWWWWWWWW
+min_size = 42_000_000 # min size (in bytes) of how much data is to be saved for each data sample of the exp, 42 is 30% of data RIGHT NOWWWWWWWWWWWWWWWWWWWWWWWWWW
 random.seed(8774) # for reproducibility
 
 # inputting data is linear, thus  min_size * 0.4 is approx the time for mongoDB of input
@@ -141,10 +141,14 @@ for i in range(N):
     writeCSV( [time.time()-s], "Arango/data/insert.csv" )
 
     # space efficiency ########################################
-    # arango db data????
-    print(arang.size())
-    print(mong.size()) # size of mongo db data
-    print(size_dir(selected_data)) # size of input data
+    data_size = size_dir(selected_data)
+
+    print(arang.size(), ", ", arang.size()/data_size)
+    print(mong.size(), ", ", mong.size()/data_size ) # size of mongo db data
+    print(data_size) # size of input data
+
+    writeCSV( [mong.size()/data_size], "Mongo/data/space.csv" )
+    writeCSV( [arang.size()/data_size], "Arango/data/space.csv" )
     
 
     # query efficiency

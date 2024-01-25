@@ -9,4 +9,4 @@
 - comment all code and so
 
 
-- read has different types of queries, name a different file for each type of query
+- add mongoDB but with zstd as well
