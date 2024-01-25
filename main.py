@@ -82,7 +82,7 @@ def select_json_files(directory, M):
 def writeCSV(array, file_path):
     with open(file_path, 'a', newline='') as f:
         writer = csv.writer(f)
-        writer.writerow(array)
+        #writer.writerow(array)
 
 
 def size_dir(path): # ="C:/ProgramData/ArangoDB/engine-rocksdb/journals/"
@@ -142,6 +142,7 @@ for i in range(N):
 
     # space efficiency ########################################
     # arango db data????
+    print(arang.size())
     print(mong.size()) # size of mongo db data
     print(size_dir(selected_data)) # size of input data
     

@@ -37,6 +37,18 @@ class Arango():
     def insertData(self, directory):
         self.dataGetter.storeDirectory(directory)
 
+    def size(self):
+        total_size = 0
+
+        for collection in self.db.collections():
+            collection_ = self.db.collection(collection["name"])
+
+            for doc in collection_.all():
+                doc_size = len(str(doc))
+
+                total_size += doc_size
+
+        return total_size
 
 
 
