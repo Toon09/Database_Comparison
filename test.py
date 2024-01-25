@@ -22,9 +22,12 @@ arang = Arango()
 
 print()
 
+a = [1, 2, 3]
+
+print( sum(a)/len(a) )
 
 s = time.time()
-cur = arang.findUniqueAppIds()
+cur = arang.findUniqueModelIds()
 print(f"exec: {time.time()-s}\n")
 
 for x in cur:

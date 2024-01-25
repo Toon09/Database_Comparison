@@ -85,17 +85,42 @@ def writeCSV(array, file_path):
         writer.writerow(array)
 
 
+def size_dir(path): # ="C:/ProgramData/ArangoDB/engine-rocksdb/journals/"
+    total_size = 0
+    for dirpath, dirnames, filenames in os.walk(path):
+        for f in filenames:
+            fp = os.path.join(dirpath, f)
+            if not os.path.islink(fp):
+                total_size += os.path.getsize(fp)
+
+    return total_size
+
+
+def rowAVG(file_path, row=-1):
+    with open(file_path, 'r') as file:
+        line = file.readlines()
+        line = line[row]
+        
+    values = line.split(',')
+    return sum(float(value) for value in values) / len(values)
+    
+
 
 data_directory = "C:/Users/raul/OneDrive - HBI Bisscheroux/Documents/werk/report_phase1/data_report/"
 
 N = 1_000 # number of data samples to get
-min_size = 42_000_000 # min size (in bytes) of how much data is to be saved for each data sample of the exp, 42 is 30% of data RIGHT NOWWWWWWWWWWWWWWWWWWWWWWWWWW
+min_size = 30_000_000 # min size (in bytes) of how much data is to be saved for each data sample of the exp, 42 is 30% of data RIGHT NOWWWWWWWWWWWWWWWWWWWWWWWWWW
 random.seed(8774) # for reproducibility
 
+# inputting data is linear, thus  min_size * 0.4 is approx the time for mongoDB of input
+# to get ebtter approx do a large avg of time/min_size and use as "velocity"
 
 for i in range(N):
     mong = Mongo()
     arang = Arango()
+
+    mong.deleteDatabase()
+    arang.deleteDatabase()
 
     # databases are created with indexes
     mong.createDatabase()
@@ -116,11 +141,61 @@ for i in range(N):
     writeCSV( [time.time()-s], "Arango/data/insert.csv" )
 
     # space efficiency ########################################
-    print(mong.size())
-    print(arang.size(selected_data))
+    # arango db data????
+    print(mong.size()) # size of mongo db data
+    print(size_dir(selected_data)) # size of input data
     
 
     # query efficiency
+    s = time.time()
+    mong.findUniqueModelIds()
+    writeCSV( [time.time()-s], "Mongo/data/readModelID.csv" )
+
+    s = time.time()
+    arang.findUniqueModelIds()
+    writeCSV( [time.time()-s], "Arango/data/readModelID.csv" )
+
+
+    s = time.time()
+    mong.findUniqueOrganisationIds()
+    writeCSV( [time.time()-s], "Mongo/data/readOrgID.csv" )
+
+    s = time.time()
+    arang.findUniqueOrganisationIds()
+    writeCSV( [time.time()-s], "Arango/data/readOrgID.csv" )
+
+
+    s = time.time()
+    cur = mong.findUniqueDeviceIds()
+    writeCSV( [time.time()-s], "Mongo/data/readDeviceID.csv" )
+
+    s = time.time()
+    cur = arang.findUniqueDeviceIds()
+    writeCSV( [time.time()-s], "Arango/data/readDeviceID.csv" )
+
+
+    temp = []
+    for x in cur:
+        if x == None:
+            continue
+        s = time.time()
+        mong.queryByDeviceId(x)
+        temp.append(time.time()-s)
+
+    writeCSV( temp, "Mongo/data/readDevicesFields.csv" )
+    writeCSV( [sum(temp)/len(temp)], "Mongo/data/readDevicesFieldsAVG.csv" )
+
+
+    temp = []
+    for x in cur:
+        if x == None:
+            continue
+        s = time.time()
+        arang.queryByDeviceId(x)
+        temp.append(time.time()-s)
+
+    writeCSV( temp, "Arango/data/readDevicesFields.csv" )
+    writeCSV( [sum(temp)/len(temp)], "Arango/data/readDevicesFieldsAVG.csv" )
 
 
     # delete to empty and be able to get next data sample without any relations
@@ -130,4 +205,4 @@ for i in range(N):
     del mong
     del arang
 
-    print(f"round {i+1} done!")
+    print(f"round {i+1} done!\n")

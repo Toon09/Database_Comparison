@@ -2,8 +2,9 @@ from pymongo import MongoClient
 from Mongo.insertData import insertData
 
 class Mongo():
-    def __init__(self, URI:str = "mongodb://localhost:27017/") -> None:
-        self.client = MongoClient(URI, compressors='zlib')
+    def __init__(self, URI:str = "mongodb://localhost:27017/", comp = 'zlib') -> None:
+        self.client = MongoClient(URI, compressors=comp) # zstd more compress but slower
+        # requires running npm install @mongodb-js/zstd to have zstd
         self.db = self.client["HBI_datalake"] # connection to the specific database
         self.shoreline = self.db["shoreline"] # connection to the main collection of the database where most data will be
 
