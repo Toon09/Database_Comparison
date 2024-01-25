@@ -6,9 +6,9 @@ inside loop
 
 get data +++
 
-create db's
+create db's +++
 
-add indeces
+add indeces +++
 
 do data insertion and measure time it took for each of the db's
 append time measure in files of each folder corresponding to time measures
@@ -20,7 +20,7 @@ do read test
 append in corresponding file of each
 
 
-delete db's
+delete db's +++
 
 
 """
@@ -32,10 +32,13 @@ from Couchbase.Couchbase import Couchbase
 
 
 import os
-import random
+import csv
 import json
 import ijson
+import time
+import random
 from decimal import Decimal
+
 
 class DecimalEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -76,11 +79,18 @@ def select_json_files(directory, M):
 
 
 
+def writeCSV(array, file_path):
+    with open(file_path, 'a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(array)
+
+
 
 data_directory = "C:/Users/raul/OneDrive - HBI Bisscheroux/Documents/werk/report_phase1/data_report/"
 
 N = 1_000 # number of data samples to get
-min_size = 12_000_000 # min size (in bytes) of how much data is to be saved for each data sample of the exp
+min_size = 42_000_000 # min size (in bytes) of how much data is to be saved for each data sample of the exp, 42 is 30% of data RIGHT NOWWWWWWWWWWWWWWWWWWWWWWWWWW
+random.seed(8774) # for reproducibility
 
 
 for i in range(N):
@@ -94,8 +104,23 @@ for i in range(N):
 
     # generating the data
     select_json_files(data_directory, min_size)
+    selected_data = "C:/Users/raul/OneDrive - HBI Bisscheroux/Documents/Dev/Database_Comparison/0_exp_data"
 
-    # write code to append data in the corresponding datafolder
+    # insert data speed
+    s = time.time()
+    mong.insertData(selected_data)
+    writeCSV( [time.time()-s], "Mongo/data/insert.csv" )
+
+    s = time.time()
+    arang.insertData(selected_data)
+    writeCSV( [time.time()-s], "Arango/data/insert.csv" )
+
+    # space efficiency ########################################
+    print(mong.size())
+    print(arang.size(selected_data))
+    
+
+    # query efficiency
 
 
     # delete to empty and be able to get next data sample without any relations
@@ -104,3 +129,5 @@ for i in range(N):
 
     del mong
     del arang
+
+    print(f"round {i+1} done!")

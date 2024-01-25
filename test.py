@@ -53,8 +53,8 @@ cur = arang.queryByDeviceId("fe8940ab-9ffe-4c16-ba59-b3235e2ae776#1eda41b6-78af-
 print(f"exec: {time.time()-s}\n")
 
 
-#arang.deleteDatabase()
-#mong.deleteDatabase()
+arang.deleteDatabase()
+mong.deleteDatabase()
 
 
 

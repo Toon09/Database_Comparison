@@ -1,6 +1,5 @@
 from pymongo import MongoClient
 from Mongo.insertData import insertData
-import time
 
 class Mongo():
     def __init__(self, URI:str = "mongodb://localhost:27017/") -> None:
@@ -29,10 +28,16 @@ class Mongo():
         self.shoreline.create_index([("attributes.organisation", 1), ("metadata.time", 1)])
     
     def insertData(self, directory):
-        start_time = time.time()
         self.dataGetter.storeDirectory(directory)
-    
-        return (time.time() - start_time)
+
+
+    def size(self):
+        stats = self.db.command("dbstats")
+        return stats['dataSize'] 
+
+
+
+    ############ queries
 
 
     def queryPayloadFields(self, organisation_id, start_date, end_date):

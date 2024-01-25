@@ -1,6 +1,6 @@
 from arango import ArangoClient
 from Arango.insertData import insertData
-import time
+import os
 
 class Arango():
     def __init__(self, URI:str = "http://localhost:8529") -> None:
@@ -35,10 +35,21 @@ class Arango():
         self.shoreline.add_hash_index(fields=["attributes.organisation", "metadata.time"], unique=False)
 
     def insertData(self, directory):
-        start_time = time.time()
         self.dataGetter.storeDirectory(directory)
 
-        return (time.time() - start_time)
+
+    def size(self, path="C:/ProgramData/ArangoDB/engine-rocksdb/journals/"):
+        total_size = 0
+        for dirpath, dirnames, filenames in os.walk(path):
+            for f in filenames:
+                fp = os.path.join(dirpath, f)
+                if not os.path.islink(fp):
+                    total_size += os.path.getsize(fp)
+
+        return total_size
+
+
+
 
     ######### QUERIES
 

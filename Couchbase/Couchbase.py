@@ -3,7 +3,6 @@ from couchbase.auth import PasswordAuthenticator
 from couchbase.exceptions import BucketNotFoundException
 
 from Couchbase import insertData
-import time
 
 class Couchbase():
     def __init__(self, URI:str = "couchbase://localhost", username:str = "root", password:str = "rooring") -> None:
@@ -43,6 +42,4 @@ class Couchbase():
         self.get_db().query_indexes().create_index(self.bucket_name, 'index_name', fields=["attributes.organisation", "metadata.time"])
 
     def insertData(self, directory):
-        start_time = time.time()
         self.dataGetter.storeDirectory(directory)
-        return (time.time() - start_time)
