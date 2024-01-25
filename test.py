@@ -57,3 +57,15 @@ print(f"exec: {time.time()-s}\n")
 #mong.deleteDatabase()
 
 
+
+
+"""
+queries to be used:
+
+findUniqueModelIds
+findUniqueDeviceIds
+findUniqueOrganisationIds
+
+for all devices
+    queryByDeviceId   <--- take avg of this one and put in new datafile
+"""
