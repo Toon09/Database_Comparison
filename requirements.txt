@@ -5,3 +5,5 @@ zstandard
 matplotlib
 csv
 ijson
+matplotlib
+pandas
