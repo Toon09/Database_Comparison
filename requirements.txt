@@ -7,3 +7,4 @@ csv
 ijson
 matplotlib
 pandas
+scipy
