@@ -117,14 +117,14 @@ random.seed(8774) # for reproducibility
 
 for i in range(N):
     mong = Mongo()
-    arang = Arango()
+    #arang = Arango()
 
     mong.deleteDatabase()
-    arang.deleteDatabase()
+    #arang.deleteDatabase()
 
     # databases are created with indexes
     mong.createDatabase()
-    arang.createDatabase()
+    #arang.createDatabase()
 
 
     # generating the data
@@ -134,45 +134,45 @@ for i in range(N):
     # insert data speed
     s = time.time()
     mong.insertData(selected_data)
-    writeCSV( [time.time()-s], "Mongo/data/insert.csv" )
+    writeCSV( [time.time()-s], "Mongo/data_snappy/insert.csv" )
 
     s = time.time()
-    arang.insertData(selected_data)
-    writeCSV( [time.time()-s], "Arango/data/insert.csv" )
+    #arang.insertData(selected_data)
+    #writeCSV( [time.time()-s], "Arango/data/insert.csv" )
 
     # space efficiency ########################################
     data_size = size_dir(selected_data)
 
-    print(arang.size(), ", ", arang.size()/data_size)
+    #print(arang.size(), ", ", arang.size()/data_size)
     print(mong.size(), ", ", mong.size()/data_size ) # size of mongo db data
     print(data_size) # size of input data
 
-    writeCSV( [mong.size()/data_size], "Mongo/data/space.csv" )
-    writeCSV( [arang.size()/data_size], "Arango/data/space.csv" )
+    writeCSV( [mong.size()/data_size], "Mongo/data_snappy/space.csv" )
+    #riteCSV( [arang.size()/data_size], "Arango/data/space.csv" )
     
 
     # query efficiency
     s = time.time()
     mong.findUniqueModelIds()
-    writeCSV( [time.time()-s], "Mongo/data/readModelID.csv" )
+    writeCSV( [time.time()-s], "Mongo/data_snappy/readModelID.csv" )
 
     s = time.time()
-    arang.findUniqueModelIds()
-    writeCSV( [time.time()-s], "Arango/data/readModelID.csv" )
+    #arang.findUniqueModelIds()
+    #writeCSV( [time.time()-s], "Arango/data/readModelID.csv" )
 
 
     s = time.time()
     mong.findUniqueOrganisationIds()
-    writeCSV( [time.time()-s], "Mongo/data/readOrgID.csv" )
+    writeCSV( [time.time()-s], "Mongo/data_snappy/readOrgID.csv" )
 
     s = time.time()
-    arang.findUniqueOrganisationIds()
-    writeCSV( [time.time()-s], "Arango/data/readOrgID.csv" )
+    #arang.findUniqueOrganisationIds()
+    #writeCSV( [time.time()-s], "Arango/data/readOrgID.csv" )
 
 
     s = time.time()
     cur = mong.findUniqueDeviceIds()
-    writeCSV( [time.time()-s], "Mongo/data/readDeviceID.csv" )
+    writeCSV( [time.time()-s], "Mongo/data_snappy/readDeviceID.csv" )
 
     temp = []
     for x in cur:
@@ -182,31 +182,31 @@ for i in range(N):
         mong.queryByDeviceId(x)
         temp.append(time.time()-s)
 
-    writeCSV( temp, "Mongo/data/readDevicesFields.csv" )
-    writeCSV( [sum(temp)/len(temp)], "Mongo/data/readDevicesFieldsAVG.csv" )
+    writeCSV( temp, "Mongo/data_snappy/readDevicesFields.csv" )
+    writeCSV( [sum(temp)/len(temp)], "Mongo/data_snappy/readDevicesFieldsAVG.csv" )
 
 
     s = time.time()
-    cur = arang.findUniqueDeviceIds()
-    writeCSV( [time.time()-s], "Arango/data/readDeviceID.csv" )
+    #cur = arang.findUniqueDeviceIds()
+    #writeCSV( [time.time()-s], "Arango/data/readDeviceID.csv" )
 
     temp = []
     for x in cur:
         if x == None:
             continue
         s = time.time()
-        arang.queryByDeviceId(x)
+        #arang.queryByDeviceId(x)
         temp.append(time.time()-s)
 
-    writeCSV( temp, "Arango/data/readDevicesFields.csv" )
-    writeCSV( [sum(temp)/len(temp)], "Arango/data/readDevicesFieldsAVG.csv" )
+    #writeCSV( temp, "Arango/data/readDevicesFields.csv" )
+    #writeCSV( [sum(temp)/len(temp)], "Arango/data/readDevicesFieldsAVG.csv" )
 
 
     # delete to empty and be able to get next data sample without any relations
     mong.deleteDatabase()
-    arang.deleteDatabase()
+    #arang.deleteDatabase()
 
     del mong
-    del arang
+    #del arang
 
     print(f"round {i+1} done!\n")

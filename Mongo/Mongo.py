@@ -2,13 +2,21 @@ from pymongo import MongoClient
 from Mongo.insertData import insertData
 
 class Mongo():
-    def __init__(self, URI:str = "mongodb://localhost:27017/", comp = 'zlib') -> None:
+    def __init__(self, URI:str = "mongodb://localhost:27017/", comp = 'snappy') -> None:
         self.client = MongoClient(URI, compressors=comp) # zstd more compress but slower
         # requires running npm install @mongodb-js/zstd to have zstd
         self.db = self.client["HBI_datalake"] # connection to the specific database
         self.shoreline = self.db["shoreline"] # connection to the main collection of the database where most data will be
 
         self.dataGetter = insertData(db=self.db, shoreline=self.shoreline) # all methods for isnerting data are managed here
+
+        result = self.client.admin.command('isMaster')
+
+        # Check the compression algorithms
+        if 'compression' in result:
+            print('Compression algorithms supported by the server:', result['compression'])
+        else:
+            print('The server does not support any compression algorithms.')
 
 
     def deleteDatabase(self):
