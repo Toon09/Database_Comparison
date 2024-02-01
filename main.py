@@ -134,7 +134,7 @@ for i in range(N):
     # insert data speed
     s = time.time()
     mong.insertData(selected_data)
-    writeCSV( [time.time()-s], "Mongo/data_zstd/insert.csv" )
+    writeCSV( [time.time()-s], "Mongo/data_snappy/insert.csv" )
 
     s = time.time()
     #arang.insertData(selected_data)
@@ -147,14 +147,14 @@ for i in range(N):
     print(mong.size(), ", ", mong.size()/data_size ) # size of mongo db data
     print(data_size) # size of input data
 
-    writeCSV( [mong.size()/data_size], "Mongo/data_zstd/space.csv" )
+    writeCSV( [mong.size()/data_size], "Mongo/data_snappy/space.csv" )
     #writeCSV( [arang.size()/data_size], "Arango/data/space.csv" )
     
 
     # query efficiency
     s = time.time()
     mong.findUniqueModelIds()
-    writeCSV( [time.time()-s], "Mongo/data_zstd/readModelID.csv" )
+    writeCSV( [time.time()-s], "Mongo/data_snappy/readModelID.csv" )
 
     s = time.time()
     #arang.findUniqueModelIds()
@@ -162,7 +162,7 @@ for i in range(N):
 
     s = time.time()
     mong.findUniqueOrganisationIds()
-    writeCSV( [time.time()-s], "Mongo/data_zstd/readOrgID.csv" )
+    writeCSV( [time.time()-s], "Mongo/data_snappy/readOrgID.csv" )
 
     s = time.time()
     #arang.findUniqueOrganisationIds()
@@ -171,7 +171,7 @@ for i in range(N):
 
     s = time.time()
     cur = mong.findUniqueDeviceIds()
-    writeCSV( [time.time()-s], "Mongo/data_zstd/readDeviceID.csv" )
+    writeCSV( [time.time()-s], "Mongo/data_snappy/readDeviceID.csv" )
 
     temp = []
     for x in cur:
@@ -181,8 +181,8 @@ for i in range(N):
         mong.queryByDeviceId(x)
         temp.append(time.time()-s)
 
-    writeCSV( temp, "Mongo/data_zstd/readDevicesFields.csv" )
-    writeCSV( [sum(temp)/len(temp)], "Mongo/data_zstd/readDevicesFieldsAVG.csv" )
+    writeCSV( temp, "Mongo/data_snappy/readDevicesFields.csv" )
+    writeCSV( [sum(temp)/len(temp)], "Mongo/data_snappy/readDevicesFieldsAVG.csv" )
 
 
     s = time.time()

@@ -2,7 +2,7 @@ from pymongo import MongoClient
 from Mongo.insertData import insertData
 
 class Mongo():
-    def __init__(self, URI:str = "mongodb://localhost:27017/", comp = 'zstd') -> None:
+    def __init__(self, URI:str = "mongodb://localhost:27017/", comp = 'snappy') -> None:
         self.client = MongoClient(URI, compressors=comp) # zstd more compress but slower
         # requires running npm install @mongodb-js/zstd to have zstd
         self.db = self.client["HBI_datalake"] # connection to the specific database
