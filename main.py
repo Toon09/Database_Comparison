@@ -115,6 +115,14 @@ random.seed(8774) # for reproducibility
 # to get ebtter approx do a large avg of time/min_size and use as "velocity"
 
 for i in range(N):
+    # generating the data
+    select_json_files(data_directory, min_size)
+    selected_data = "C:/Users/raul/OneDrive - HBI Bisscheroux/Documents/Dev/Database_Comparison/0_exp_data"
+
+    if i < 141:
+        print(f"skip {i+1}")
+        continue ########3 MAKE SURE IT SKIPS
+
     mong = Mongo()
     arang = Arango()
 
@@ -125,19 +133,10 @@ for i in range(N):
     mong.createDatabase()
     arang.createDatabase()
 
-
-    # generating the data
-    select_json_files(data_directory, min_size)
-    selected_data = "C:/Users/raul/OneDrive - HBI Bisscheroux/Documents/Dev/Database_Comparison/0_exp_data"
-
-    if i < 141:
-        print(f"skip {i+1}")
-        continue ########3 MAKE SURE IT SKIPS
-
     # insert data speed
     s = time.time()
     mong.insertData(selected_data)
-    writeCSV( [time.time()-s], "Mongo/data_snappy/insert.csv" )
+    writeCSV( [time.time()-s], "Mongo/data_zlib/insert.csv" )
 
     s = time.time()
     arang.insertData(selected_data)
@@ -150,14 +149,14 @@ for i in range(N):
     print(mong.size(), ", ", mong.size()/data_size ) # size of mongo db data
     print(data_size) # size of input data
 
-    writeCSV( [mong.size()/data_size], "Mongo/data_snappy/space.csv" )
+    writeCSV( [mong.size()/data_size], "Mongo/data_zlib/space.csv" )
     writeCSV( [arang.size()/data_size], "Arango/data/space.csv" )
     
 
     # query efficiency
     s = time.time()
     mong.findUniqueModelIds()
-    writeCSV( [time.time()-s], "Mongo/data_snappy/readModelID.csv" )
+    writeCSV( [time.time()-s], "Mongo/data_zlib/readModelID.csv" )
 
     s = time.time()
     arang.findUniqueModelIds()
@@ -165,7 +164,7 @@ for i in range(N):
 
     s = time.time()
     mong.findUniqueOrganisationIds()
-    writeCSV( [time.time()-s], "Mongo/data_snappy/readOrgID.csv" )
+    writeCSV( [time.time()-s], "Mongo/data_zlib/readOrgID.csv" )
 
     s = time.time()
     arang.findUniqueOrganisationIds()
@@ -174,7 +173,7 @@ for i in range(N):
 
     s = time.time()
     cur = mong.findUniqueDeviceIds()
-    writeCSV( [time.time()-s], "Mongo/data_snappy/readDeviceID.csv" )
+    writeCSV( [time.time()-s], "Mongo/data_zlib/readDeviceID.csv" )
 
     temp = []
     for x in cur:
@@ -184,8 +183,8 @@ for i in range(N):
         mong.queryByDeviceId(x)
         temp.append(time.time()-s)
 
-    writeCSV( temp, "Mongo/data_snappy/readDevicesFields.csv" )
-    writeCSV( [sum(temp)/len(temp)], "Mongo/data_snappy/readDevicesFieldsAVG.csv" )
+    writeCSV( temp, "Mongo/data_zlib/readDevicesFields.csv" )
+    writeCSV( [sum(temp)/len(temp)], "Mongo/data_zlib/readDevicesFieldsAVG.csv" )
 
 
     s = time.time()
