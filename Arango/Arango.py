@@ -57,7 +57,7 @@ class Arango():
 
 
     def queryPayloadFields(self, organisation_id, start_date, end_date):
-        # Convert datetime objects to ISO format strings
+        # Convert datetime objects to ISO strings
         start_date = start_date.isoformat()
         end_date = end_date.isoformat()
 
